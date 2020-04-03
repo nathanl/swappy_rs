@@ -35,7 +35,7 @@ Steps:
 
 - Convert the input phrase to an alphagram.
 - Create the first candidate anagram and drop it in the priority queue. It looks like this:
-  - `priority` is `()`
+  - `priority` is `[]`
   - `found_words` is an empty vec
   - `remaining_chars` has the full input alphagram
   - `next_candidate_word` is `0`
@@ -49,7 +49,7 @@ Steps:
     - spin up `THREAD_COUNT` threads and let each take a batch of `BATCH_SIZE`, based on the `next_candidate_word`. Eg, if `next_candidate_word` is `0`, `BATCH_SIZE` is 10 and `THREAD_COUNT` is `3`, one thread would try out `candidate_words` `0-9`, the next would try `10-19`, and the next `20-29`. (NOTE: if the max `candidate_words` index is `18`, only spin up 2 threads because we only have 2 batches left to do.)
     - For each candidate word in its batch, the thread will do as follows:
       - If the word can't be taken from `remaining_chars`, it will be ignored
-      - If the word can be taken from `remaining_chars`, the thread will create a new `CandidateAnagram` with that word added to the `found_words`, its alphagram removed from `remaining_chars`, and `next_candidate_word` set to `(candidate word's index) + 1`
+      - If the word can be taken from `remaining_chars`, the thread will create a new `CandidateAnagram` with that word added to the `found_words`, its alphagram removed from `remaining_chars`, and `next_candidate_word` set to `(candidate word's index) + 0` (in case we find apple apple)
     - Wait for all threads to finish.
     - Add all the new `CandidateAnagrams` to the priority queue
     - if `DICTIONARY_EXHAUSTED`, discard the `CandidateAnagram` we pulled initially; otherwise, update it to have `next_candidate_word=30` and put it back in the priority queue.
