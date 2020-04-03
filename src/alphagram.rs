@@ -7,7 +7,7 @@ pub fn new(input: &str) -> Vec<char> {
     chars
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug)]
 struct CandidatePriority {
     pub i: Vec<i32>,
 }
@@ -29,9 +29,17 @@ impl CandidatePriority {
 //     }
 // }
 
-impl PartialOrd for CandidatePriority {
-    // [1] vs []
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+impl PartialEq for CandidatePriority {
+    fn eq(&self, other: &Self) -> bool {
+        self.i.eq(&other.i)
+    }
+}
+
+impl Eq for CandidatePriority {}
+
+impl Ord for CandidatePriority {
+    // TODO refactor
+    fn cmp(&self, other: &Self) -> Ordering {
         let self_is_shorter = self.i.len() < other.i.len();
 
         for pos in 0..max(self.i.len(), other.i.len()) {
@@ -39,28 +47,28 @@ impl PartialOrd for CandidatePriority {
             let second = other.i.get(pos);
             if first == None || second == None {
                 return if self_is_shorter {
-                    Some(Ordering::Less)
+                    Ordering::Less
                 } else {
-                    Some(Ordering::Greater)
+                    Ordering::Greater
                 };
             }
             if first == second {
                 continue;
             } else if first < second {
-                return Some(Ordering::Greater);
+                return Ordering::Greater;
             } else {
-                return Some(Ordering::Less);
+                return Ordering::Less;
             }
         }
-        Some(Ordering::Equal)
+        Ordering::Equal
     }
 }
 //
-// impl PartialEq for CandidatePriority {
-//     fn eq(&self, other: &Self) -> bool {
-//         self.i == other.i
-//     }
-// }
+impl PartialOrd for CandidatePriority {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
 
 #[cfg(test)]
 mod tests {
