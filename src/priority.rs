@@ -68,8 +68,8 @@ mod tests {
 
     #[test]
     fn order_by_index_or_length() {
-        let two_two = Priority::new(vec![2,2]);
-        let two_one = Priority::new(vec![2,1]);
+        let two_two = Priority::new(vec![2, 2]);
+        let two_one = Priority::new(vec![2, 1]);
         assert!(two_one > two_two);
         assert!(two_two < two_one);
 
@@ -78,14 +78,14 @@ mod tests {
         assert!(one > empty);
         assert!(empty < one);
 
-        let two_eight = Priority::new(vec![2,8]);
+        let two_eight = Priority::new(vec![2, 8]);
         assert!(one > two_eight);
         assert!(two_eight < one);
     }
 
     #[test]
     fn priorites_work_in_pq() {
-        let two_two = Priority::new(vec![2,2]);
+        let two_two = Priority::new(vec![2, 2]);
 
         let one = Priority::new(vec![1]);
 

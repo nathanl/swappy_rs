@@ -17,5 +17,4 @@ fn main() {
     pq.push("Strawberries", (2, 3));
     let res = pq.pop();
     println!("we got {:?}", res);
-
 }
