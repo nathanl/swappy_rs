@@ -1,4 +1,5 @@
 mod alphagram;
+mod priority;
 use priority_queue::PriorityQueue;
 
 fn main() {
