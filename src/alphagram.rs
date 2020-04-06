@@ -1,8 +1,17 @@
 use std::collections::HashMap;
+use std::hash::{Hash, Hasher};
 
 // https://doc.rust-lang.org/rust-by-example/generics/new_types.html
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Alphagram(HashMap<char, u8>);
+
+// TODO this will be sloooow we think
+impl Hash for Alphagram {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        let str = format!("{:?}", self.0);
+        str.hash(state);
+    }
+}
 
 impl Alphagram {
     pub fn new(input: &str) -> Alphagram {
@@ -35,6 +44,10 @@ impl Alphagram {
             }
         }
         Ok(Alphagram(haystack))
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.0.len() == 0
     }
 }
 

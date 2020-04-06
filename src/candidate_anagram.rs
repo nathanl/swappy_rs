@@ -6,10 +6,9 @@
 use crate::alphagram::Alphagram;
 use crate::priority::Priority;
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Hash)]
 pub struct CandidateAnagram{
     pub remaining_chars: Alphagram,
-    pub priority: Priority,
     pub next_word: usize
 }
 
@@ -17,7 +16,6 @@ impl CandidateAnagram {
     pub fn new(phrase: &str) -> CandidateAnagram {
         CandidateAnagram {
             remaining_chars: Alphagram::new(&phrase),
-            priority: Priority::new(vec![]),
             next_word: 0
         }
     }
@@ -25,7 +23,6 @@ impl CandidateAnagram {
     pub fn advanced_by(&self, count: usize) -> CandidateAnagram {
         CandidateAnagram{
             remaining_chars: self.remaining_chars.clone(),
-            priority: self.priority.clone(),
             next_word: self.next_word + count
         }
     }
@@ -36,12 +33,15 @@ impl CandidateAnagram {
             Ok(remainder) => {
                 Ok(CandidateAnagram{
                     remaining_chars: remainder,
-                    priority: self.priority.plus(index),
                     next_word: index
                 })
 
             }
         }
+    }
+
+    pub fn is_complete(&self) -> bool {
+        self.remaining_chars.is_empty()
     }
 }
 
@@ -51,20 +51,20 @@ impl CandidateAnagram {
 
         #[test]
         fn test_advanced_by() {
-            let original = CandidateAnagram{remaining_chars: Alphagram::new(""), priority: Priority::new(vec![1,3]), next_word: 10};
+            let original = CandidateAnagram{remaining_chars: Alphagram::new(""), next_word: 10};
             let advanced = original.advanced_by(11);
-            let expected = CandidateAnagram{remaining_chars: Alphagram::new(""), priority: Priority::new(vec![1,3]), next_word: 21};
+            let expected = CandidateAnagram{remaining_chars: Alphagram::new(""), next_word: 21};
             assert_eq!(advanced, expected);
         }
 
         #[test]
         fn test_without() {
-            let original = CandidateAnagram{remaining_chars: Alphagram::new("race"), priority: Priority::new(vec![1]), next_word: 2};
+            let original = CandidateAnagram{remaining_chars: Alphagram::new("race"), next_word: 2};
             let without = original.without(&Alphagram::new("car"), 3).unwrap();
-            let expected = CandidateAnagram{remaining_chars: Alphagram::new("e"), priority: Priority::new(vec![1, 3]), next_word: 3};
+            let expected = CandidateAnagram{remaining_chars: Alphagram::new("e"), next_word: 3};
             assert_eq!(without, expected);
 
-            let original = CandidateAnagram{remaining_chars: Alphagram::new("race"), priority: Priority::new(vec![1]), next_word: 2};
+            let original = CandidateAnagram{remaining_chars: Alphagram::new("race"), next_word: 2};
             let without = original.without(&Alphagram::new("bananar"), 3);
             // TODO assert Err without regard to actual message
             assert_eq!(without, Err("could not remove character"));

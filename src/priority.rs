@@ -2,7 +2,7 @@ use std::cmp::max;
 use std::cmp::Ordering;
 
 // https://doc.rust-lang.org/rust-by-example/generics/new_types.html
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Hash)]
 pub struct Priority(Vec<usize>);
 
 impl Priority {
