@@ -3,8 +3,7 @@ use crate::alphagram::Alphagram;
 use crate::priority::Priority;
 use priority_queue::PriorityQueue;
 
-fn anagrams_for(user_input: &str) -> Vec<String> {
-    let dict = vec!["fanhead", "car", "potatoes", "race", "floppy", "acre", "aa", "rcecr"];
+fn anagrams_for(user_input: &str, dict: &Vec<&str>) -> Vec<String> {
     let requested_length = 2;
 
     let mut results = vec![];
@@ -38,7 +37,6 @@ fn anagrams_for(user_input: &str) -> Vec<String> {
 }
 
 fn priority_to_string(priority: &Priority, dict: &Vec<&str>) -> String {
-    // priority.into_iter().map(|p| dict[p]).collect::<Vec<&str>>().join(&" ")
     priority.clone().into_iter().map(|p| dict[p]).collect::<Vec<&str>>().join(&" ")
 }
 
@@ -50,7 +48,8 @@ mod tests {
 
     #[test]
     fn test_anagrams_for() {
-        assert_eq!(anagrams_for("racecar"), vec!["car race", "car acre"]);
+        let dict = vec!["fanhead", "car", "potatoes", "race", "floppy", "acre", "aa", "rcecr"];
+        assert_eq!(anagrams_for("racecar", &dict), vec!["car race", "car acre"]);
     }
 
     #[test]
