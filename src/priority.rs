@@ -1,20 +1,19 @@
 use std::cmp::max;
 use std::cmp::Ordering;
 
+// https://doc.rust-lang.org/rust-by-example/generics/new_types.html
 #[derive(Debug)]
-struct Priority {
-    pub i: Vec<i32>,
-}
+struct Priority(Vec<i32>);
 
 impl Priority {
     fn new(i: Vec<i32>) -> Priority {
-        Priority { i }
+        Priority(i)
     }
 }
 
 impl PartialEq for Priority {
     fn eq(&self, other: &Self) -> bool {
-        self.i.eq(&other.i)
+        self.0.eq(&other.0)
     }
 }
 
@@ -23,11 +22,11 @@ impl Eq for Priority {}
 impl Ord for Priority {
     // TODO refactor
     fn cmp(&self, other: &Self) -> Ordering {
-        let self_is_shorter = self.i.len() < other.i.len();
+        let self_is_shorter = self.0.len() < other.0.len();
 
-        for pos in 0..max(self.i.len(), other.i.len()) {
-            let first = self.i.get(pos);
-            let second = other.i.get(pos);
+        for pos in 0..max(self.0.len(), other.0.len()) {
+            let first = self.0.get(pos);
+            let second = other.0.get(pos);
             if first == None || second == None {
                 return if self_is_shorter {
                     Ordering::Less
