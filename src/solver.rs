@@ -3,9 +3,7 @@ use crate::alphagram::Alphagram;
 use crate::priority::Priority;
 use priority_queue::PriorityQueue;
 
-fn anagrams_for(user_input: &str, dict: &Vec<&str>) -> Vec<String> {
-    let requested_length = 2;
-
+pub fn anagrams_for(user_input: &str, dict: &Vec<String>, requested_length: usize) -> Vec<String> {
     let mut results = vec![];
     let mut pq = PriorityQueue::new();
     let c = CandidateAnagram{remaining_chars: Alphagram::new(user_input), next_word: 0};
@@ -18,14 +16,14 @@ fn anagrams_for(user_input: &str, dict: &Vec<&str>) -> Vec<String> {
       }
       let (candidate, priority) = popped.unwrap();
       if candidate.is_complete() {
-          results.push(priority_to_string(&priority, &dict));
+          results.push(priority_to_string(&priority, dict));
           if results.len() >= requested_length {
               return results;
           }
           continue;
       }
       let word_index = candidate.next_word;
-      let check_word = dict[word_index];
+      let check_word = &dict[word_index];
       let without_result = candidate.without(&Alphagram::new(check_word), word_index);
       without_result.and_then(|new_candidate| Ok(pq.push(new_candidate, priority.plus(word_index))));
 
@@ -36,8 +34,14 @@ fn anagrams_for(user_input: &str, dict: &Vec<&str>) -> Vec<String> {
     }
 }
 
-fn priority_to_string(priority: &Priority, dict: &Vec<&str>) -> String {
-    priority.clone().into_iter().map(|p| dict[p]).collect::<Vec<&str>>().join(&" ")
+fn priority_to_string(priority: &Priority, dict: &Vec<String>) -> String {
+    let mut result = String::new();
+    for number in priority.clone().into_iter() {
+        result.push_str(&dict[number].clone());
+        result.push_str(" ");
+    }
+    return result;
+    //priority.clone().into_iter().map(|p| dict[p]).clone().collect::<Vec<String>>().join(&" ")
 }
 
 #[cfg(test)]
