@@ -2,12 +2,21 @@ use std::cmp::max;
 use std::cmp::Ordering;
 
 // https://doc.rust-lang.org/rust-by-example/generics/new_types.html
-#[derive(Debug)]
-struct Priority(Vec<i32>);
+#[derive(Debug, Clone)]
+pub struct Priority(Vec<usize>);
 
 impl Priority {
-    fn new(i: Vec<i32>) -> Priority {
+    pub fn new(i: Vec<usize>) -> Priority {
         Priority(i)
+    }
+}
+
+impl IntoIterator for Priority {
+    type Item = usize;
+    type IntoIter = std::vec::IntoIter<Self::Item>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.0.into_iter()
     }
 }
 

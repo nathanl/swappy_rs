@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 
 // https://doc.rust-lang.org/rust-by-example/generics/new_types.html
-#[derive(Debug, PartialEq, Eq)]
-struct Alphagram(HashMap<char, u8>);
+#[derive(Debug, PartialEq, Eq, Clone)]
+pub struct Alphagram(HashMap<char, u8>);
 
 impl Alphagram {
     pub fn new(input: &str) -> Alphagram {
