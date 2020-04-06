@@ -6,8 +6,14 @@ use std::cmp::Ordering;
 pub struct Priority(Vec<usize>);
 
 impl Priority {
-    pub fn new(i: Vec<usize>) -> Priority {
-        Priority(i)
+    pub fn new(vec: Vec<usize>) -> Priority {
+        Priority(vec)
+    }
+
+    pub fn plus(&self, i: usize) -> Priority {
+        let mut new_vec = self.0.clone();
+        new_vec.push(i);
+        Priority(new_vec)
     }
 }
 
@@ -89,6 +95,14 @@ mod tests {
         let two_eight = Priority::new(vec![2, 8]);
         assert!(one > two_eight);
         assert!(two_eight < one);
+    }
+
+    #[test]
+    fn test_push() {
+        let empty = Priority::new(vec![]);
+        let one = Priority::new(vec![1]);
+        let appended = empty.plus(1);
+        assert_eq!(one, appended);
     }
 
     #[test]
