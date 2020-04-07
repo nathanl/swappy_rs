@@ -24,10 +24,6 @@ impl Alphagram {
         Alphagram(map)
     }
 
-    pub fn to_hash(&self) -> &HashMap<char, u8> {
-        &self.0
-    }
-
     pub fn without(&self, needle: &Alphagram) -> Result<Alphagram, &'static str> {
         let mut haystack: HashMap<char, u8> = self.0.clone();
         for (&this_char, needle_count) in &needle.0 {
@@ -70,17 +66,6 @@ mod tests {
             Err(_) => (),
             Ok(_) => panic!("expected this to not work"),
         }
-    }
-
-    #[test]
-    fn test_new() {
-        let hm: HashMap<char, u8> = HashMap::new();
-        assert_eq!(Alphagram::new("").to_hash(), &hm);
-
-        let hm: HashMap<char, u8> = vec![('a', 2), ('c', 2), ('r', 2), ('e', 1)]
-            .into_iter()
-            .collect();
-        assert_eq!(Alphagram::new("racecar").to_hash(), &hm);
     }
 
     #[test]

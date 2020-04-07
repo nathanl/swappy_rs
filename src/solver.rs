@@ -30,7 +30,13 @@ pub fn anagrams_for(user_input: &str, word_list: &Vec<String>, requested_length:
       let word_index = candidate.next_word;
       let word_list_alphagram = &word_list[word_index].1;
       let without_result = candidate.without(&word_list_alphagram, word_index);
-      without_result.and_then(|new_candidate| Ok(pq.push(new_candidate, priority.plus(word_index))));
+      match without_result {
+          Ok(new_candidate) => {
+              pq.push(new_candidate, priority.plus(word_index));
+              ()
+          },
+          Err(_) => ()
+      }
 
       if candidate.next_word + 1 < word_list.len() {
           let next_candidate = candidate.advanced_by(1);
@@ -52,7 +58,6 @@ fn priority_to_string(priority: &Priority, word_list: &Vec<(&String,Alphagram)>)
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::alphagram::Alphagram;
     use crate::priority::Priority;
     use crate::word_list;
     
