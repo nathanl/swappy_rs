@@ -5,8 +5,11 @@ use priority_queue::PriorityQueue;
 
 pub fn anagrams_for(user_input: &str, dict: &Vec<String>, requested_length: usize) -> Vec<String> {
     let mut results = vec![];
+    println!("Prepping the dictionary");
+    let dict: Vec<_> = dict.iter().map(|word| (word, Alphagram::new(word))).collect();
+    println!("Prepped the dictionary");
     let mut pq = PriorityQueue::new();
-    let c = CandidateAnagram{remaining_chars: Alphagram::new(user_input), next_word: 0};
+    let c = CandidateAnagram::new(user_input);
     pq.push(c, Priority::new(vec![]));
 
     loop {
@@ -16,15 +19,16 @@ pub fn anagrams_for(user_input: &str, dict: &Vec<String>, requested_length: usiz
       }
       let (candidate, priority) = popped.unwrap();
       if candidate.is_complete() {
-          results.push(priority_to_string(&priority, dict));
+          let result_string = priority_to_string(&priority, &dict);
+          results.push(result_string);
           if results.len() >= requested_length {
               return results;
           }
           continue;
       }
       let word_index = candidate.next_word;
-      let check_word = &dict[word_index];
-      let without_result = candidate.without(&Alphagram::new(check_word), word_index);
+      let dictionary_alphagram = &dict[word_index].1;
+      let without_result = candidate.without(&dictionary_alphagram, word_index);
       without_result.and_then(|new_candidate| Ok(pq.push(new_candidate, priority.plus(word_index))));
 
       if candidate.next_word + 1 < dict.len() {
@@ -34,10 +38,10 @@ pub fn anagrams_for(user_input: &str, dict: &Vec<String>, requested_length: usiz
     }
 }
 
-fn priority_to_string(priority: &Priority, dict: &Vec<String>) -> String {
+fn priority_to_string(priority: &Priority, dict: &Vec<(&String,Alphagram)>) -> String {
     let mut result = String::new();
     for number in priority.clone().into_iter() {
-        result.push_str(&dict[number].clone());
+        result.push_str(&dict[number].0.clone());
         result.push_str(" ");
     }
     return result;

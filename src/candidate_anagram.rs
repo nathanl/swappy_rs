@@ -1,10 +1,4 @@
-// A "candidate anagram" looks like: `CandidateAnagram{remaining_chars: Vec<Char>, priority: Priority{i: Vec<i32>}, next_candidate_word: usize}`
-// - Create the first candidate anagram and drop it in the priority queue. It looks like this:
-//   - `priority` is `[]`
-//   - `remaining_chars` has the full input alphagram
-//   - `next_word` is `0`
 use crate::alphagram::Alphagram;
-use crate::priority::Priority;
 
 #[derive(PartialEq, Eq, Debug, Hash)]
 pub struct CandidateAnagram{
