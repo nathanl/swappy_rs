@@ -5,11 +5,14 @@ use std::hash::{Hash, Hasher};
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Alphagram(HashMap<char, u8>);
 
-// TODO this will be sloooow we think
+// NOTE: the priority queue calls this function, but apparently the
+// function always returns ()...
+// ...and that doesn't matter? :`¯\_(ツ)_/¯`:
 impl Hash for Alphagram {
-    fn hash<H: Hasher>(&self, state: &mut H) {
-        let str = format!("{:?}", self.0);
-        str.hash(state);
+    fn hash<H: Hasher>(&self, _state: &mut H) {
+        ()
+        // let str = format!("{:?}", self.0);
+        // str.hash(state);
     }
 }
 
