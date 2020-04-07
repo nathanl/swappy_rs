@@ -1,3 +1,4 @@
+use crate::word_list;
 use crate::candidate_anagram::CandidateAnagram;
 use crate::alphagram::Alphagram;
 use crate::priority::Priority;
@@ -6,7 +7,7 @@ use priority_queue::PriorityQueue;
 pub fn anagrams_for(user_input: &str, word_list: &Vec<String>, requested_length: usize) -> Vec<String> {
     let mut results = vec![];
     println!("Prepping the word list");
-    let word_list = words_with_alphagrams(word_list);
+    let word_list = word_list::words_with_alphagrams(word_list);
     // let word_list: Vec<_> = word_list.iter().map(|word| (word, Alphagram::new(word))).collect();
     println!("Prepped the word list");
     let mut pq = PriorityQueue::new();
@@ -37,11 +38,6 @@ pub fn anagrams_for(user_input: &str, word_list: &Vec<String>, requested_length:
           pq.push(next_candidate, priority);
       }
     }
-}
-
-fn words_with_alphagrams(word_list: &Vec<String>) -> Vec<(&String, Alphagram)> {
-    let list: Vec<_> = word_list.iter().map(|word| (word, Alphagram::new(word))).collect();
-    list
 }
 
 fn priority_to_string(priority: &Priority, word_list: &Vec<(&String,Alphagram)>) -> String {
