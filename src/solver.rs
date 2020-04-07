@@ -8,7 +8,6 @@ pub fn anagrams_for(user_input: &str, word_list: &Vec<String>, requested_length:
     let mut results = vec![];
     println!("Prepping the word list");
     let word_list = word_list::words_with_alphagrams(word_list);
-    // let word_list: Vec<_> = word_list.iter().map(|word| (word, Alphagram::new(word))).collect();
     println!("Prepped the word list");
     let mut pq = PriorityQueue::new();
     let c = CandidateAnagram::new(user_input);
@@ -55,17 +54,25 @@ mod tests {
     use super::*;
     use crate::alphagram::Alphagram;
     use crate::priority::Priority;
+    use crate::word_list;
+    
+    fn word_list(vec: Vec<&str>) -> Vec<String> {
+        let strings: Vec<_> = vec.iter().map(|str| str.to_string()).collect();
+        strings
+    }
 
     #[test]
     fn test_anagrams_for() {
-        let word_list = vec!["fanhead", "car", "potatoes", "race", "floppy", "acre", "aa", "rcecr"];
-        assert_eq!(anagrams_for("racecar", &word_list), vec!["car race", "car acre"], 2);
+        let word_list = word_list(vec!["fanhead", "car", "potatoes", "race", "floppy", "acre", "aa", "rcecr"]);
+        // let word_list = word_list::words_with_alphagrams(&vec!["fanhead", "car", "potatoes", "race", "floppy", "acre", "aa", "rcecr"]);
+        assert_eq!(anagrams_for("racecar", &word_list, 2), vec!["car race ", "car acre "]);
     }
 
     #[test]
     fn test_priority_to_string() {
-        let word_list = vec!["fanhead", "car", "potatoes", "race", "floppy", "acre", "aa", "rcecr"];
+        let word_list = word_list(vec!["fanhead", "car", "potatoes", "race", "floppy", "acre", "aa", "rcecr"]);
+        let words_with_alphagrams = word_list::words_with_alphagrams(&word_list);
         let p = Priority::new(vec![1,3]);
-        assert_eq!(priority_to_string(&p, &word_list), "car race");
+        assert_eq!(priority_to_string(&p, &words_with_alphagrams), "car race ");
     }
 }
