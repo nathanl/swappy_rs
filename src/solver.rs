@@ -2,18 +2,24 @@ use crate::word_list;
 use crate::candidate_anagram::CandidateAnagram;
 use crate::alphagram::Alphagram;
 use crate::priority::Priority;
-use priority_queue::PriorityQueue;
+// use priority_queue::PriorityQueue;
+use keyed_priority_queue::KeyedPriorityQueue;
 
-pub fn anagrams_for(user_input: &str, word_list: &Vec<String>, requested_length: usize) -> Vec<String> {
+pub fn anagrams_for(user_input: String, word_list: &Vec<String>, requested_length: usize) -> Vec<String> {
+    let mut attempts = 0;
     let mut results = vec![];
     println!("Prepping the word list");
     let word_list = word_list::words_with_alphagrams(word_list);
+    let word_list = word_list::found_within(word_list, user_input.clone());
     println!("Prepped the word list");
-    let mut pq = PriorityQueue::new();
-    let c = CandidateAnagram::new(user_input);
+    // let mut pq = PriorityQueue::new();
+    let mut pq = KeyedPriorityQueue::new();
+    let c = CandidateAnagram::new(&user_input);
     pq.push(c, Priority::new(vec![]));
 
     loop {
+      attempts +=1;
+      if attempts % 100_000 == 0 { println!("{} attempts", attempts) }
       let popped = pq.pop();
       if popped.is_none() {
           return results;
@@ -21,6 +27,7 @@ pub fn anagrams_for(user_input: &str, word_list: &Vec<String>, requested_length:
       let (candidate, priority) = popped.unwrap();
       if candidate.is_complete() {
           let result_string = priority_to_string(&priority, &word_list);
+          println!("{}", result_string);
           results.push(result_string);
           if results.len() >= requested_length {
               return results;
@@ -41,6 +48,7 @@ pub fn anagrams_for(user_input: &str, word_list: &Vec<String>, requested_length:
       if candidate.next_word + 1 < word_list.len() {
           let next_candidate = candidate.advanced_by(1);
           pq.push(next_candidate, priority);
+          // println!("pq len {}", pq.len());
       }
     }
 }

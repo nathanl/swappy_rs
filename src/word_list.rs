@@ -19,3 +19,9 @@ pub fn words_with_alphagrams(word_list: &Vec<String>) -> Vec<(&String, Alphagram
     list
 }
 
+pub fn found_within(word_list: Vec<(&String, Alphagram)>, phrase: String) -> Vec<(&String, Alphagram)> {
+    let phrase_alphagram = Alphagram::new(&phrase);
+    let word_list: Vec<_> = word_list.iter().filter(|(_word, word_alphagram)| phrase_alphagram.contains(word_alphagram)).cloned().collect();
+    word_list
+}
+

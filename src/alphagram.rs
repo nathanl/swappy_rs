@@ -42,6 +42,13 @@ impl Alphagram {
         Ok(Alphagram(haystack))
     }
 
+    pub fn contains(&self, other: &Alphagram) -> bool {
+        match self.without(other) {
+            Ok(_) => true,
+            _ => false
+        }
+    }
+
     pub fn is_empty(&self) -> bool {
         self.0.len() == 0
     }
