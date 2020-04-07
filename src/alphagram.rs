@@ -24,9 +24,9 @@ impl Alphagram {
         Alphagram(map)
     }
 
-    // pub fn to_hash(&self) -> &HashMap<char, u8> {
-    //     &self.0
-    // }
+    pub fn to_hash(&self) -> &HashMap<char, u8> {
+        &self.0
+    }
 
     pub fn without(&self, needle: &Alphagram) -> Result<Alphagram, &'static str> {
         let mut haystack: HashMap<char, u8> = self.0.clone();

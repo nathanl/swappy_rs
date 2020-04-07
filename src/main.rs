@@ -19,8 +19,8 @@ fn lines_from_file(filename: impl AsRef<Path>) -> Vec<String> {
 
 fn main() {
     // let lines = lines_from_file("/usr/share/dict/words");
-    let lines = lines_from_file("words.txt");
-    let results = solver::anagrams_for(&"meathead", &lines, 4);
+    let word_list = lines_from_file("words.txt");
+    let results = solver::anagrams_for(&"meathead", &word_list, 4);
     for r in results {
         println!("result is {}", r);
     }
