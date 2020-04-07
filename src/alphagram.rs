@@ -16,7 +16,8 @@ impl Hash for Alphagram {
 impl Alphagram {
     pub fn new(input: &str) -> Alphagram {
         let lc = input.to_lowercase();
-        let chars = lc.chars();
+        // TODO - more robust filtering of whitespace
+        let chars = lc.chars().filter(|c| c != &' ');
         let mut map: HashMap<char, u8> = HashMap::with_capacity(26);
         for this_char in chars {
             *map.entry(this_char).or_insert(0) += 1;
@@ -73,6 +74,13 @@ mod tests {
             Err(_) => (),
             Ok(_) => panic!("expected this to not work"),
         }
+    }
+
+    #[test]
+    fn ignores_whitespace() {
+        let ag1 = Alphagram::new("racecar");
+        let ag2 = Alphagram::new("race car");
+        assert_eq!(ag1, ag2);
     }
 
     #[test]

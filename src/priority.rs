@@ -70,7 +70,8 @@ impl PartialOrd for Priority {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use priority_queue::PriorityQueue;
+    // use priority_queue::PriorityQueue;
+    use keyed_priority_queue::KeyedPriorityQueue;
 
     #[test]
     fn equal_to_self() {
@@ -111,7 +112,8 @@ mod tests {
 
         let one = Priority::new(vec![1]);
 
-        let mut pq = PriorityQueue::new();
+        // let mut pq = PriorityQueue::new();
+        let mut pq = KeyedPriorityQueue::new();
         pq.push("Apples", &two_two);
         pq.push("Bananas", &one);
         let res = pq.pop();

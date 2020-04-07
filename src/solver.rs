@@ -8,10 +8,10 @@ use keyed_priority_queue::KeyedPriorityQueue;
 pub fn anagrams_for(user_input: String, word_list: &Vec<String>, requested_length: usize) -> Vec<String> {
     let mut attempts = 0;
     let mut results = vec![];
-    println!("Prepping the word list");
+    eprintln!("Prepping the word list");
     let word_list = word_list::words_with_alphagrams(word_list);
     let word_list = word_list::found_within(word_list, user_input.clone());
-    println!("Prepped the word list");
+    eprintln!("Prepped the word list");
     // let mut pq = PriorityQueue::new();
     let mut pq = KeyedPriorityQueue::new();
     let c = CandidateAnagram::new(&user_input);
@@ -19,7 +19,7 @@ pub fn anagrams_for(user_input: String, word_list: &Vec<String>, requested_lengt
 
     loop {
       attempts +=1;
-      if attempts % 100_000 == 0 { println!("{} attempts", attempts) }
+      if attempts % 100_000 == 0 { eprintln!("{} attempts, {} results", attempts, results.len()) }
       let popped = pq.pop();
       if popped.is_none() {
           return results;
@@ -78,7 +78,7 @@ mod tests {
     fn test_anagrams_for() {
         let word_list = word_list(vec!["fanhead", "car", "potatoes", "race", "floppy", "acre", "aa", "rcecr"]);
         // let word_list = word_list::words_with_alphagrams(&vec!["fanhead", "car", "potatoes", "race", "floppy", "acre", "aa", "rcecr"]);
-        assert_eq!(anagrams_for("racecar", &word_list, 2), vec!["car race ", "car acre "]);
+        assert_eq!(anagrams_for("racecar".to_string(), &word_list, 2), vec!["car race ", "car acre "]);
     }
 
     #[test]
