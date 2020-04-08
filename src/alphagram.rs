@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
-use regex::Regex;
 
 // https://doc.rust-lang.org/rust-by-example/generics/new_types.html
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -20,9 +19,6 @@ impl Hash for Alphagram {
 impl Alphagram {
     pub fn new(input: &str) -> Alphagram {
         let lc = input.to_lowercase();
-        let re = Regex::new(r"\W").unwrap();
-        let lc = re.replace_all(&lc, "");
-
         // TODO - more robust filtering of whitespace
         let chars = lc.chars().filter(|c| c != &' ');
         let mut map: HashMap<char, u8> = HashMap::with_capacity(26);
@@ -32,15 +28,7 @@ impl Alphagram {
         Alphagram(map)
     }
 
-    fn unique_char_count(&self) -> usize {
-        self.0.len()
-    }
-
     pub fn without(&self, needle: &Alphagram) -> Result<Alphagram, &'static str> {
-        if needle.unique_char_count() > self.unique_char_count() {
-            return Err("needle not found in haystack");
-        }
-        //
         let mut haystack: HashMap<char, u8> = self.0.clone();
         for (&this_char, needle_count) in &needle.0 {
             let haystack_count = haystack.get(&this_char).unwrap_or(&0);
@@ -93,17 +81,8 @@ mod tests {
 
     #[test]
     fn ignores_whitespace() {
-        let no_space = Alphagram::new("racecar");
-        let space = Alphagram::new("race car");
-        let unicode_space = Alphagram::new("race car");
-        assert_eq!(no_space, space);
-        assert_eq!(no_space, unicode_space);
-    }
-
-    #[test]
-    fn ignores_apostrophes() {
-        let ag1 = Alphagram::new("I'm");
-        let ag2 = Alphagram::new("im");
+        let ag1 = Alphagram::new("racecar");
+        let ag2 = Alphagram::new("race car");
         assert_eq!(ag1, ag2);
     }
 
