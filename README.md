@@ -1,6 +1,13 @@
 # Swappy (experimental)
 
 Programmatically produce anagrams of a given input phrase using a given dictionary.
+Prioritizes using words that occur earlier in the word list file; this lets you tailor what kinds of results you want (eg, by putting words you think are funny  at the top, or sorting the list longest to shortest for impressive finds).
+
+Note: `cargo build --release` makes it run *much* faster.
+
+Usage:
+   - `cargo run 'my phrase'`
+   - `LIMIT=3 WORDS=/some/file.txt 'my phrase'`
 
 ## Design Goals
 
