@@ -44,9 +44,11 @@ impl Ord for Priority {
             let second = other.0.get(pos);
             if first == None || second == None {
                 return if self_is_shorter {
-                    Ordering::Less
+                    Ordering::Less // deepest wins
+                    // Ordering::Greater // shallowest wins
                 } else {
-                    Ordering::Greater
+                    Ordering::Greater // deepest wins
+                    // Ordering::Less // shallowest wins
                 };
             }
             if first == second {
