@@ -29,7 +29,15 @@ impl Alphagram {
         Alphagram(map)
     }
 
+    fn unique_char_count(&self) -> usize {
+        self.0.len()
+    }
+
     pub fn without(&self, needle: &Alphagram) -> Result<Alphagram, &'static str> {
+        if needle.unique_char_count() > self.unique_char_count() {
+            return Err("needle not found in haystack");
+        }
+
         let mut haystack: HashMap<char, u8> = self.0.clone();
         for (&this_char, needle_count) in &needle.0 {
             let haystack_count = haystack.get(&this_char).unwrap_or(&0);
