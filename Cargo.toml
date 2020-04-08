@@ -7,6 +7,10 @@ exclude = ["test_support/*"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+# not explicitly listing test files for this; using tag instead
+benchmark = []
+
 [dependencies]
 priority-queue = "0.7.0"
 # keyed_priority_queue = "0.2.1"

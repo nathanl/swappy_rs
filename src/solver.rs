@@ -108,6 +108,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg_attr(not(feature = "benchmark"), ignore)]
     fn benchmark() {
         use std::time::Instant;
         let now = Instant::now();
