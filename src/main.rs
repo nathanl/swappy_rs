@@ -27,7 +27,7 @@ fn main() {
         Ok(val) => {
             val.parse::<usize>().unwrap()
         },
-        Err(_) => 1_000
+        Err(_) => 100
     };
 
     let word_list = word_list::lines_from_file(word_list_file);

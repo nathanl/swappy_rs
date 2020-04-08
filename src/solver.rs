@@ -114,11 +114,11 @@ mod tests {
         let now = Instant::now();
 
         let word_list = word_list::lines_from_file("test_support/smallish_list.txt");
-        let results = anagrams_for("rust language".to_string(), &word_list, 100);
+        let results = anagrams_for("rust language".to_string(), &word_list, 1_000);
         println!("result count {}", results.len());
 
         let elapsed = now.elapsed().as_millis();
-        assert!(elapsed < 2_000);
         println!("Elapsed: {:?}", elapsed);
+        assert!(elapsed < 7_500);
     }
 }
