@@ -20,6 +20,7 @@ impl Alphagram {
     pub fn new(input: &str) -> Alphagram {
         let lc = input.to_lowercase();
         // TODO - more robust filtering of whitespace
+        // (tried with https://crates.io/crates/regex and \W but it was way too slow)
         let chars = lc.chars().filter(|c| c != &' ');
         let mut map: HashMap<char, u8> = HashMap::with_capacity(26);
         for this_char in chars {
