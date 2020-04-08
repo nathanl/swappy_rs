@@ -3,6 +3,7 @@ name = "swappy"
 version = "0.1.0"
 authors = ["Nathan Long <him@nathanmlong.com>"]
 edition = "2018"
+exclude = ["test_support/*"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

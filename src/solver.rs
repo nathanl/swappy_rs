@@ -38,7 +38,7 @@ pub fn anagrams_for(
         let (candidate, priority) = popped.unwrap();
         if candidate.is_complete() {
             let result_string = priority_to_string(&priority, &word_list);
-            println!("{}", result_string);
+            // eprintln!("{}", result_string);
             results.push(result_string);
             if results.len() >= requested_length {
                 return results;
@@ -86,6 +86,16 @@ mod tests {
     }
 
     #[test]
+    fn test_priority_to_string() {
+        let word_list = word_list(vec![
+            "fanhead", "car", "potatoes", "race", "floppy", "acre", "aa", "rcecr",
+        ]);
+        let words_with_alphagrams = word_list::words_with_alphagrams(&word_list);
+        let p = Priority::new(vec![1, 3]);
+        assert_eq!(priority_to_string(&p, &words_with_alphagrams), "car race ");
+    }
+
+    #[test]
     fn test_anagrams_for() {
         let word_list = word_list(vec![
             "fanhead", "car", "potatoes", "race", "floppy", "acre", "aa", "rcecr",
@@ -98,12 +108,16 @@ mod tests {
     }
 
     #[test]
-    fn test_priority_to_string() {
-        let word_list = word_list(vec![
-            "fanhead", "car", "potatoes", "race", "floppy", "acre", "aa", "rcecr",
-        ]);
-        let words_with_alphagrams = word_list::words_with_alphagrams(&word_list);
-        let p = Priority::new(vec![1, 3]);
-        assert_eq!(priority_to_string(&p, &words_with_alphagrams), "car race ");
+    fn benchmark() {
+        use std::time::Instant;
+        let now = Instant::now();
+
+        let word_list = word_list::lines_from_file("test_support/smallish_list.txt");
+        let results = anagrams_for("rust language".to_string(), &word_list, 100);
+        println!("result count {}", results.len());
+
+        let elapsed = now.elapsed().as_millis();
+        assert!(elapsed < 2_000);
+        println!("Elapsed: {:?}", elapsed);
     }
 }
