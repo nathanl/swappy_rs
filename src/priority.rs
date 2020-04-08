@@ -45,10 +45,10 @@ impl Ord for Priority {
             if first == None || second == None {
                 return if self_is_shorter {
                     Ordering::Less // deepest wins
-                    // Ordering::Greater // shallowest wins
+                                   // Ordering::Greater // shallowest wins
                 } else {
                     Ordering::Greater // deepest wins
-                    // Ordering::Less // shallowest wins
+                                      // Ordering::Less // shallowest wins
                 };
             }
             if first == second {

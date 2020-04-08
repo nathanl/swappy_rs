@@ -49,7 +49,7 @@ impl Alphagram {
     pub fn contains(&self, other: &Alphagram) -> bool {
         match self.without(other) {
             Ok(_) => true,
-            _ => false
+            _ => false,
         }
     }
 

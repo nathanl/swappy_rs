@@ -15,13 +15,22 @@ pub fn lines_from_file(filename: impl AsRef<Path>) -> Vec<String> {
 }
 
 pub fn words_with_alphagrams(word_list: &Vec<String>) -> Vec<(&String, Alphagram)> {
-    let list: Vec<_> = word_list.iter().map(|word| (word, Alphagram::new(word))).collect();
+    let list: Vec<_> = word_list
+        .iter()
+        .map(|word| (word, Alphagram::new(word)))
+        .collect();
     list
 }
 
-pub fn found_within(word_list: Vec<(&String, Alphagram)>, phrase: String) -> Vec<(&String, Alphagram)> {
+pub fn found_within(
+    word_list: Vec<(&String, Alphagram)>,
+    phrase: String,
+) -> Vec<(&String, Alphagram)> {
     let phrase_alphagram = Alphagram::new(&phrase);
-    let word_list = word_list.iter().filter(|(_word, word_alphagram)| phrase_alphagram.contains(word_alphagram)).cloned().collect();
+    let word_list = word_list
+        .iter()
+        .filter(|(_word, word_alphagram)| phrase_alphagram.contains(word_alphagram))
+        .cloned()
+        .collect();
     word_list
 }
-
