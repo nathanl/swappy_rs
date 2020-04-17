@@ -3,7 +3,7 @@ use std::hash::{Hash, Hasher};
 
 // https://doc.rust-lang.org/rust-by-example/generics/new_types.html
 #[derive(Debug, PartialEq, Eq, Clone)]
-pub struct Alphagram(HashMap<char, u8>);
+pub struct Alphagram(HashMap<char, u8>, u8);
 
 // NOTE: the priority queue calls this function, but apparently the
 // function always returns ()...
@@ -23,10 +23,12 @@ impl Alphagram {
         // (tried with https://crates.io/crates/regex and \W but it was way too slow)
         let chars = lc.chars().filter(|c| c != &' ');
         let mut map: HashMap<char, u8> = HashMap::with_capacity(26);
+        let mut length: u8 = 0;
         for this_char in chars {
             *map.entry(this_char).or_insert(0) += 1;
+            length +=1;
         }
-        Alphagram(map)
+        Alphagram(map, length)
     }
 
     fn unique_char_count(&self) -> usize {
@@ -34,8 +36,12 @@ impl Alphagram {
     }
 
     pub fn without(&self, needle: &Alphagram) -> Result<Alphagram, &'static str> {
+        if needle.1 > self.1 {
+            return Err("needle is shorter than haystack");
+        }
+
         if needle.unique_char_count() > self.unique_char_count() {
-            return Err("needle not found in haystack");
+            return Err("some letters in needle are not in haystack");
         }
 
         let mut haystack: HashMap<char, u8> = self.0.clone();
@@ -52,7 +58,7 @@ impl Alphagram {
                 }
             }
         }
-        Ok(Alphagram(haystack))
+        Ok(Alphagram(haystack, self.1 - needle.1))
     }
 
     pub fn contains(&self, other: &Alphagram) -> bool {

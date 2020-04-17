@@ -2,6 +2,7 @@ use crate::alphagram::Alphagram;
 use crate::candidate_anagram::CandidateAnagram;
 use crate::priority::Priority;
 use crate::word_list;
+use std::time::Instant;
 use priority_queue::PriorityQueue;
 // use keyed_priority_queue::KeyedPriorityQueue as PriorityQueue;
 
@@ -16,20 +17,25 @@ pub fn anagrams_for(
     let word_list = word_list::words_with_alphagrams(word_list);
     let word_list = word_list::found_within(word_list, user_input.clone());
     eprintln!("Prepped the word list");
-    // let mut pq = PriorityQueue::new();
     let mut pq = PriorityQueue::new();
+
+    let mut now = Instant::now();
+
     let c = CandidateAnagram::new(&user_input);
     pq.push(c, Priority::new(vec![]));
 
     loop {
         attempts += 1;
         if attempts % 100_000 == 0 {
+            let elapsed = now.elapsed().as_millis();
             eprintln!(
-                "{} attempts, {} results, pq length {}",
+                "{} attempts, {} results, pq length {}, elapsed {:?}",
                 attempts,
                 results.len(),
-                pq.len()
-            )
+                pq.len(),
+                elapsed
+            );
+            now = Instant::now();
         }
         let popped = pq.pop();
         if popped.is_none() {
