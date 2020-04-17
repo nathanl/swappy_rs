@@ -6,7 +6,25 @@ use priority_queue::PriorityQueue;
 use std::time::Instant;
 // use keyed_priority_queue::KeyedPriorityQueue as PriorityQueue;
 
-pub fn anagrams_for(
+
+// I failed, Nathan.  I don't know rust well enough and the lag over this connection is pretty bad.
+// Maybe you and I can try writing a DFS next time.  The general idea is
+
+/*
+dfs_visit(node_in_tree, visitor_function);
+where node_in_tree is a candidate (the root being our first candidate), and dfs_visit is able to determine the node's children (
+either leaves, representing finished anagrams, or not-leaves, representing successfully removing
+a word from the root but there's still letters left over.)
+And then visitor_function(node) says "if the node is a leaf, add it to result list."
+For simplicity of typing, this code wants priority to be BACK INSIDE CandidateAnagram (we took it out because
+PQ couldn't handle it being referred to by the CandidateAnagram as well as by the PQ), and priority would be
+renamed to something like "anagram_so_far" or "path".
+Things I don't know how to do yet, if I could even get the above code typed in:
+ - bail after 100 entries
+ */
+
+
+pub fn anagrams_for_priority_queue(
     user_input: String,
     word_list: &Vec<String>,
     requested_length: usize,
