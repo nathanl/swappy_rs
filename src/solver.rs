@@ -2,8 +2,8 @@ use crate::alphagram::Alphagram;
 use crate::candidate_anagram::CandidateAnagram;
 use crate::priority::Priority;
 use crate::word_list;
-use std::time::Instant;
 use priority_queue::PriorityQueue;
+use std::time::Instant;
 // use keyed_priority_queue::KeyedPriorityQueue as PriorityQueue;
 
 pub fn anagrams_for(

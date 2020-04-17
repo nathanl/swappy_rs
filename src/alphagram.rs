@@ -26,7 +26,7 @@ impl Alphagram {
         let mut length: u8 = 0;
         for this_char in chars {
             *map.entry(this_char).or_insert(0) += 1;
-            length +=1;
+            length += 1;
         }
         Alphagram(map, length)
     }
@@ -36,36 +36,39 @@ impl Alphagram {
     }
 
     pub fn without(&self, needle: &Alphagram) -> Result<Alphagram, &'static str> {
-        if needle.1 > self.1 {
-            return Err("needle is shorter than haystack");
-        }
+        if !self.contains(needle) { return Err("needle not found"); }
 
-        if needle.unique_char_count() > self.unique_char_count() {
-            return Err("some letters in needle are not in haystack");
-        }
-
+        // Now that we know we can remove needle from haystack, actually do so
         let mut haystack: HashMap<char, u8> = self.0.clone();
         for (&this_char, needle_count) in &needle.0 {
             let haystack_count = haystack.get(&this_char).unwrap_or(&0);
-            if haystack_count < needle_count {
-                return Err("could not remove character");
+            let new_haystack_count = haystack_count - needle_count;
+            if new_haystack_count == 0 {
+                haystack.remove(&this_char);
             } else {
-                let new_haystack_count = haystack_count - needle_count;
-                if new_haystack_count == 0 {
-                    haystack.remove(&this_char);
-                } else {
-                    haystack.insert(this_char, new_haystack_count);
-                }
+                haystack.insert(this_char, new_haystack_count);
             }
         }
         Ok(Alphagram(haystack, self.1 - needle.1))
     }
 
-    pub fn contains(&self, other: &Alphagram) -> bool {
-        match self.without(other) {
-            Ok(_) => true,
-            _ => false,
+    // This is the "hot path" - the vast majority of the time we will find that we can't remove one
+    // alphagram from another, and we want to determine that as quickly as possible
+    pub fn contains(&self, needle: &Alphagram) -> bool {
+        if needle.1 > self.1 {
+            return false; // needle is shorter than haystack
         }
+
+        if needle.unique_char_count() > self.unique_char_count() {
+            return false; // some letters in needle are not in haystack
+        }
+
+        for (&this_char, needle_count) in &needle.0 {
+            if self.0.get(&this_char).unwrap_or(&0) < needle_count {
+                return false; // haystack doesn't have enough of this letter
+            }
+        }
+        true
     }
 
     pub fn is_empty(&self) -> bool {

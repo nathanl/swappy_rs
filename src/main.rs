@@ -20,14 +20,12 @@ fn main() {
 
     let word_list_file = match env::var("WORDS") {
         Ok(filename) => filename.to_string(),
-        Err(_) => "test_support/smallish_list.txt".to_string()
+        Err(_) => "test_support/smallish_list.txt".to_string(),
     };
 
     let limit: usize = match env::var("LIMIT") {
-        Ok(val) => {
-            val.parse::<usize>().unwrap()
-        },
-        Err(_) => 100
+        Ok(val) => val.parse::<usize>().unwrap(),
+        Err(_) => 100,
     };
 
     let word_list = word_list::lines_from_file(word_list_file);
@@ -39,9 +37,11 @@ fn main() {
 }
 
 fn print_usage() {
-    println!("
+    println!(
+        "
     USAGE:
        cargo run 'my phrase'
        LIMIT=3 WORDS=/some/file.txt 'my phrase'
-    ");
+    "
+    );
 }
