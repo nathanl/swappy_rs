@@ -24,7 +24,29 @@ Things I don't know how to do yet, if I could even get the above code typed in:
  */
 
 
-pub fn anagrams_for_priority_queue(
+/* We are searching the tree of possible anagrams which use our word list and phrase.
+ * Our tree could look like this, where a node is "found words / remaining letters".
+ *
+ * - racecar /
+ *   - race / car
+ *       - race a / cr  [failed leaf]
+ *       - race car /  [successful leaf]
+ *   - craec / ar
+ *       - racec a / r  [failed leaf]
+ *
+ * Our data structures are:
+ *   - Alphagram
+ *   - CandidateAnagram has the remainining characters and the words found so far (as a list of
+ *   numbers)
+ *
+ * Game plan:
+ * - Get rid of Priority and move the "words found so far" vec into CandidateAnagram
+ * - Build a depth-first search which is like:
+ *   - If I have no letters left, add to results and throw if we have enough results
+ *   - else, for each child, recurse into child
+ */
+
+pub fn anagrams_for(
     user_input: String,
     word_list: &Vec<String>,
     requested_length: usize,
@@ -71,6 +93,7 @@ pub fn anagrams_for_priority_queue(
         }
         let word_index = candidate.next_word;
         let word_list_alphagram = &word_list[word_index].1;
+        // take out apple and remember that the next word to try is number 1 (apple)
         let without_result = candidate.without(&word_list_alphagram, word_index);
         match without_result {
             Ok(new_candidate) => {
@@ -80,6 +103,7 @@ pub fn anagrams_for_priority_queue(
             Err(_) => (),
         }
 
+        // if we haven't run out of words, also try looking for the next word
         if candidate.next_word + 1 < word_list.len() {
             let next_candidate = candidate.advanced_by(1);
             pq.push(next_candidate, priority);

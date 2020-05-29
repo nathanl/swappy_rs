@@ -54,6 +54,8 @@ impl Alphagram {
 
     // This is the "hot path" - the vast majority of the time we will find that we can't remove one
     // alphagram from another, and we want to determine that as quickly as possible
+    // NOTE: could we speed this up with an XOR of bitsets? XOR of the two + AND with the needle
+    // where result is non-zero? How would this work with unicode?
     pub fn contains(&self, needle: &Alphagram) -> bool {
         if needle.1 > self.1 {
             return false; // needle is shorter than haystack

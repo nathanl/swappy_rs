@@ -3,6 +3,7 @@ mod candidate_anagram;
 mod priority;
 mod solver;
 mod word_list;
+mod word;
 use std::env;
 
 fn main() {
@@ -29,7 +30,7 @@ fn main() {
     };
 
     let word_list = word_list::lines_from_file(word_list_file);
-    let results = solver::anagrams_for_priority_queue(phrase.to_string(), &word_list, limit);
+    let results = solver::anagrams_for(phrase.to_string(), &word_list, limit);
     for r in &results {
         println!("{}", r);
     }
