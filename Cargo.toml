@@ -12,5 +12,5 @@ exclude = ["test_support/*"]
 benchmark = []
 
 [dependencies]
-priority-queue = "0.7.0"
+# priority-queue = "0.7.0"
 # keyed_priority_queue = "0.2.1"
