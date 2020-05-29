@@ -60,7 +60,27 @@ pub fn anagrams_for(
 
     let c = CandidateAnagram::new(&user_input);
 
-    return results;
+    let mut result_accumulator: Vec<Priority> = vec![];
+    dfs(c, &mut result_accumulator, &requested_length);
+    return result_accumulator;
+}
+pub fn dfs(c: CandidateAnagram, result_accumulator: &mut Vec<Priority>, requested_length: &usize) {
+    if result_list_is_full() {
+        return;
+    }
+    if c.is_complete() {
+        // base case: node is a leaf with no remaining chars
+        result_accumulator.add(c.something());
+    }
+    else {
+        // recursive case: dfs into any children (may have no children if we're at a dead-end leaf with
+        // remaining chars)
+        for child in c.children() {
+            dfs(child, &mut result_accumulator, &requested_length);
+        }
+    }
+
+
     // pq.push(c, Priority::new(vec![]));
     //
     // loop {

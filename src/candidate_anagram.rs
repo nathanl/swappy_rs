@@ -18,14 +18,6 @@ impl CandidateAnagram {
         }
     }
 
-    pub fn advanced_by(&self, count: usize) -> CandidateAnagram {
-        CandidateAnagram {
-            priority: Priority::new(vec![]),
-            remaining_chars: self.remaining_chars.clone(),
-            next_word: self.next_word + count,
-        }
-    }
-
     pub fn without(
         &self,
         word: &Alphagram,
