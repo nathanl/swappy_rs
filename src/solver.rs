@@ -49,37 +49,39 @@ pub fn anagrams_for(
     word_list: &Vec<String>,
     requested_length: usize,
 ) -> Vec<String> {
-    let mut attempts = 0;
-    let mut results = vec![];
+    let mut anagrams: Vec<String> = vec![];
     eprintln!("Prepping the word list");
     let word_list = word_list::words_with_alphagrams(word_list);
     let word_list = word_list::found_within(word_list, user_input.clone());
     eprintln!("Prepped the word list");
 
-    let mut now = Instant::now();
-
     let c = CandidateAnagram::new(&user_input);
 
     let mut result_accumulator: Vec<Priority> = vec![];
-    dfs(c, &mut result_accumulator, &requested_length);
-    return result_accumulator;
+    dfs(c, &mut result_accumulator, &requested_length, &word_list);
+
+    for priority in result_accumulator {
+        anagrams.push(priority_to_string(&priority, &word_list));
+    }
+    return anagrams;
 }
-pub fn dfs(c: CandidateAnagram, result_accumulator: &mut Vec<Priority>, requested_length: &usize) {
-    if result_list_is_full() {
+
+pub fn dfs(c: CandidateAnagram, result_accumulator: &mut Vec<Priority>, requested_length: &usize, word_list: &Vec<(&String, Alphagram)>) {
+    if &result_accumulator.len() >= requested_length {
         return;
     }
     if c.is_complete() {
         // base case: node is a leaf with no remaining chars
-        result_accumulator.add(c.something());
+        result_accumulator.push(c.priority);
     }
     else {
         // recursive case: dfs into any children (may have no children if we're at a dead-end leaf with
         // remaining chars)
-        for child in c.children() {
-            dfs(child, &mut result_accumulator, &requested_length);
+        for child in c.children(&word_list) {
+            // println!("child {:?}", child);
+            dfs(child, result_accumulator, requested_length, word_list);
         }
     }
-
 
     // pq.push(c, Priority::new(vec![]));
     //

@@ -15,6 +15,10 @@ impl Priority {
         new_vec.push(i);
         Priority(new_vec)
     }
+
+    pub fn last(&self) -> Option<&usize> {
+        self.0.last()
+    }
 }
 
 impl IntoIterator for Priority {
@@ -72,7 +76,7 @@ impl PartialOrd for Priority {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use priority_queue::PriorityQueue;
+    // use priority_queue::PriorityQueue;
     // use keyed_priority_queue::KeyedPriorityQueue as PriorityQueue;
 
     #[test]
@@ -106,19 +110,5 @@ mod tests {
         let one = Priority::new(vec![1]);
         let appended = empty.plus(1);
         assert_eq!(one, appended);
-    }
-
-    #[test]
-    fn priorites_work_in_pq() {
-        let two_two = Priority::new(vec![2, 2]);
-
-        let one = Priority::new(vec![1]);
-
-        // let mut pq = PriorityQueue::new();
-        let mut pq = PriorityQueue::new();
-        pq.push("Apples", &two_two);
-        pq.push("Bananas", &one);
-        let res = pq.pop();
-        assert_eq!(res, Some(("Bananas", &one)))
     }
 }

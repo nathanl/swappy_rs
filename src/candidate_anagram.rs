@@ -36,6 +36,23 @@ impl CandidateAnagram {
     pub fn is_complete(&self) -> bool {
         self.remaining_chars.is_empty()
     }
+
+    pub fn children(&self, word_list: &Vec<(&String, Alphagram)>) -> Vec<CandidateAnagram> {
+        let mut children: Vec<CandidateAnagram> = vec![];
+        let p = self.priority.last().unwrap_or(&0usize).clone();
+
+        for i in p..word_list.len() {
+            let alphagram = &word_list[i].1;
+
+            match self.without(alphagram, i) {
+                Err(_e) => continue,
+                Ok(new_candidate) => {
+                    children.push(new_candidate);
+                }
+            }
+        }
+        return children;
+    }
 }
 
 #[cfg(test)]
