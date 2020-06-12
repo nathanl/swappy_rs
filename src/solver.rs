@@ -2,25 +2,7 @@ use crate::alphagram::Alphagram;
 use crate::candidate_anagram::CandidateAnagram;
 use crate::priority::Priority;
 use crate::word_list;
-use std::time::Instant;
-
-
-// I failed, Nathan.  I don't know rust well enough and the lag over this connection is pretty bad.
-// Maybe you and I can try writing a DFS next time.  The general idea is
-
-/*
-dfs_visit(node_in_tree, visitor_function);
-where node_in_tree is a candidate (the root being our first candidate), and dfs_visit is able to determine the node's children (
-either leaves, representing finished anagrams, or not-leaves, representing successfully removing
-a word from the root but there's still letters left over.)
-And then visitor_function(node) says "if the node is a leaf, add it to result list."
-For simplicity of typing, this code wants priority to be BACK INSIDE CandidateAnagram (we took it out because
-PQ couldn't handle it being referred to by the CandidateAnagram as well as by the PQ), and priority would be
-renamed to something like "anagram_so_far" or "path".
-Things I don't know how to do yet, if I could even get the above code typed in:
- - bail after 100 entries
- */
-
+// use std::time::Instant;
 
 /* We are searching the tree of possible anagrams which use our word list and phrase.
  * Our tree could look like this, where a node is "found words / remaining letters".
@@ -119,7 +101,6 @@ mod tests {
         let word_list = word_list(vec![
             "fanhead", "car", "potatoes", "race", "floppy", "acre", "aa", "rcecr",
         ]);
-        // let word_list = word_list::words_with_alphagrams(&vec!["fanhead", "car", "potatoes", "race", "floppy", "acre", "aa", "rcecr"]);
         assert_eq!(
             anagrams_for("racecar".to_string(), &word_list, 2),
             vec!["car race ", "car acre "]
