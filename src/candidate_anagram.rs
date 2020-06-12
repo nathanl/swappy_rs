@@ -5,16 +5,14 @@ use crate::priority::Priority;
 #[derive(PartialEq, Eq, Debug, Hash)]
 pub struct CandidateAnagram {
     pub priority: Priority,
-    pub remaining_chars: Alphagram,
-    pub next_word: usize,
+    pub remaining_chars: Alphagram
 }
 
 impl CandidateAnagram {
     pub fn new(phrase: &str) -> CandidateAnagram {
         CandidateAnagram {
             priority: Priority::new(vec![]),
-            remaining_chars: Alphagram::new(&phrase),
-            next_word: 0,
+            remaining_chars: Alphagram::new(&phrase)
         }
     }
 
@@ -27,8 +25,7 @@ impl CandidateAnagram {
             Err(e) => Err(e),
             Ok(remainder) => Ok(CandidateAnagram {
                 priority: self.priority.plus(index),
-                remaining_chars: remainder,
-                next_word: index,
+                remaining_chars: remainder
             }),
         }
     }
@@ -63,21 +60,18 @@ mod tests {
     fn test_without() {
         let original = CandidateAnagram {
             priority: Priority::new(vec![]),
-            remaining_chars: Alphagram::new("race"),
-            next_word: 2,
+            remaining_chars: Alphagram::new("race")
         };
         let without = original.without(&Alphagram::new("car"), 3).unwrap();
         let expected = CandidateAnagram {
             priority: Priority::new(vec![3]),
-            remaining_chars: Alphagram::new("e"),
-            next_word: 3,
+            remaining_chars: Alphagram::new("e")
         };
         assert_eq!(without, expected);
 
         let original = CandidateAnagram {
             priority: Priority::new(vec![]),
-            remaining_chars: Alphagram::new("race"),
-            next_word: 2,
+            remaining_chars: Alphagram::new("race")
         };
         let without = original.without(&Alphagram::new("bananar"), 3);
         // TODO assert Err without regard to actual message

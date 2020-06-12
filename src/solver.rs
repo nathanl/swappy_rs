@@ -82,55 +82,6 @@ pub fn dfs(c: CandidateAnagram, result_accumulator: &mut Vec<Priority>, requeste
             dfs(child, result_accumulator, requested_length, word_list);
         }
     }
-
-    // pq.push(c, Priority::new(vec![]));
-    //
-    // loop {
-    //     attempts += 1;
-    //     if attempts % 100_000 == 0 {
-    //         let elapsed = now.elapsed().as_millis();
-    //         eprintln!(
-    //             "{} attempts, {} results, pq length {}, elapsed {:?}",
-    //             attempts,
-    //             results.len(),
-    //             pq.len(),
-    //             elapsed
-    //         );
-    //         now = Instant::now();
-    //     }
-    //     let popped = pq.pop();
-    //     if popped.is_none() {
-    //         return results;
-    //     }
-    //     let (candidate, priority) = popped.unwrap();
-    //     if candidate.is_complete() {
-    //         let result_string = priority_to_string(&priority, &word_list);
-    //         // eprintln!("{}", result_string);
-    //         results.push(result_string);
-    //         if results.len() >= requested_length {
-    //             return results;
-    //         }
-    //         continue;
-    //     }
-    //     let word_index = candidate.next_word;
-    //     let word_list_alphagram = &word_list[word_index].1;
-    //     // take out apple and remember that the next word to try is number 1 (apple)
-    //     let without_result = candidate.without(&word_list_alphagram, word_index);
-    //     match without_result {
-    //         Ok(new_candidate) => {
-    //             pq.push(new_candidate, priority.plus(word_index));
-    //             ()
-    //         }
-    //         Err(_) => (),
-    //     }
-    //
-    //     // if we haven't run out of words, also try looking for the next word
-    //     if candidate.next_word + 1 < word_list.len() {
-    //         let next_candidate = candidate.advanced_by(1);
-    //         pq.push(next_candidate, priority);
-    //         // println!("pq len {}", pq.len());
-    //     }
-    // }
 }
 
 fn priority_to_string(priority: &Priority, word_list: &Vec<(&String, Alphagram)>) -> String {
@@ -140,7 +91,6 @@ fn priority_to_string(priority: &Priority, word_list: &Vec<(&String, Alphagram)>
         result.push_str(" ");
     }
     return result;
-    //priority.clone().into_iter().map(|p| word_list[p]).clone().collect::<Vec<String>>().join(&" ")
 }
 
 #[cfg(test)]
