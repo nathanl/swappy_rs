@@ -4,14 +4,14 @@ use crate::priority::Priority;
 
 #[derive(PartialEq, Eq, Debug, Hash)]
 pub struct CandidateAnagram {
-    pub priority: Priority,
+    pub words_found: Priority,
     pub remaining_chars: Alphagram
 }
 
 impl CandidateAnagram {
     pub fn new(phrase: &str) -> CandidateAnagram {
         CandidateAnagram {
-            priority: Priority::new(vec![]),
+            words_found: Priority::new(vec![]),
             remaining_chars: Alphagram::new(&phrase)
         }
     }
@@ -24,7 +24,7 @@ impl CandidateAnagram {
         match self.remaining_chars.without(word) {
             Err(e) => Err(e),
             Ok(remainder) => Ok(CandidateAnagram {
-                priority: self.priority.plus(index),
+                words_found: self.words_found.plus(index),
                 remaining_chars: remainder
             }),
         }
@@ -36,7 +36,7 @@ impl CandidateAnagram {
 
     pub fn children(&self, word_list: &Vec<(&String, Alphagram)>) -> Vec<CandidateAnagram> {
         let mut children: Vec<CandidateAnagram> = vec![];
-        let p = self.priority.last().unwrap_or(&0usize).clone();
+        let p = self.words_found.last().unwrap_or(&0usize).clone();
 
         for i in p..word_list.len() {
             let alphagram = &word_list[i].1;
@@ -59,18 +59,18 @@ mod tests {
     #[test]
     fn test_without() {
         let original = CandidateAnagram {
-            priority: Priority::new(vec![]),
+            words_found: Priority::new(vec![]),
             remaining_chars: Alphagram::new("race")
         };
         let without = original.without(&Alphagram::new("car"), 3).unwrap();
         let expected = CandidateAnagram {
-            priority: Priority::new(vec![3]),
+            words_found: Priority::new(vec![3]),
             remaining_chars: Alphagram::new("e")
         };
         assert_eq!(without, expected);
 
         let original = CandidateAnagram {
-            priority: Priority::new(vec![]),
+            words_found: Priority::new(vec![]),
             remaining_chars: Alphagram::new("race")
         };
         let without = original.without(&Alphagram::new("bananar"), 3);

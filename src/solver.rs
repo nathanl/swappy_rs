@@ -54,7 +54,7 @@ pub fn dfs(c: CandidateAnagram, result_accumulator: &mut Vec<Priority>, requeste
     }
     if c.is_complete() {
         // base case: node is a leaf with no remaining chars
-        result_accumulator.push(c.priority);
+        result_accumulator.push(c.words_found);
     }
     else {
         // recursive case: dfs into any children (may have no children if we're at a dead-end leaf with
