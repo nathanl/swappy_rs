@@ -4,6 +4,7 @@ mod priority;
 mod solver;
 mod word_list;
 mod word;
+mod node;
 use std::env;
 
 fn main() {

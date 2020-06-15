@@ -1,0 +1,38 @@
+return early if input is blank
+
+let mut anagrams = vec![]
+let mut node_map = hash map with the root node {[] => user_input_alphagram}
+let mut current_node = [0]
+let last_word_index == word_list.len()
+
+## the loop
+
+return if results full
+return if current_node = root ([])
+- get alphagram from parent_node(current_node)
+- try to remove the last word in current_node
+  - if can
+    - if letters remaining is empty
+      - add current_node to results
+      - set current_node = next_node(current_node, last_word_index)
+      - continue
+    - else
+      - set current_node = child_node(current_node)
+      - continue
+  - if can't
+    - set current_node = next_node(current_node, last_word_index)
+    - continue
+
+parent_node(node)
+  pop last item off node
+
+child_node(node)
+  take last item and add another one - eg [0] becomes [0,0]
+
+next_node(node, last_word_index)
+  if node == [], return []
+  if we can increment last item without passing last_word_index
+    - do that
+  else
+    next_node(parent_node(node), last_word_index)
+  

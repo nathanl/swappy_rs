@@ -1,30 +1,78 @@
 use crate::alphagram::Alphagram;
 use crate::candidate_anagram::CandidateAnagram;
 use crate::priority::Priority;
+use crate::node::Node;
 use crate::word_list;
+use std::collections::HashMap;
 // use std::time::Instant;
 
 /* We are searching the tree of possible anagrams which use our word list and phrase.
- * Our tree could look like this, where a node is "found words / remaining letters".
+ * Our tree could look like this, where a node is "found words / remaining letters". A leaf node is
+ * one where either we've used all the letters (successful leaf - anagram) or there is no word we
+ * can spell with the remaining letters (failed leaf)
  *
  * - racecar /
+ *   - ace / rcar
+ *       - ace car / r [failed leaf]
  *   - race / car
  *       - race a / cr  [failed leaf]
  *       - race car /  [successful leaf]
- *   - craec / ar
- *       - racec a / r  [failed leaf]
  *
  * Our data structures are:
  *   - Alphagram
  *   - CandidateAnagram has the remaining characters and the words found so far (as a list of
  *   numbers)
- *
- * Game plan:
- * - Get rid of Priority and move the "words found so far" vec into CandidateAnagram
- * - Build a depth-first search which is like:
- *   - If I have no letters left, add to results and throw if we have enough results
- *   - else, for each child, recurse into child
  */
+
+
+pub fn new_anagrams_for(
+    user_input: String,
+    word_list: &Vec<String>,
+    requested_length: usize,
+) -> Vec<String> {
+    let mut anagrams: Vec<String> = vec![];
+    eprintln!("Prepping the word list");
+    let word_list = word_list::words_with_alphagrams(word_list);
+    let word_list = word_list::found_within(word_list, user_input.clone());
+    eprintln!("Prepped the word list");
+
+    // New plan:
+    if user_input == "".to_string() { return vec![] };
+    let mut good_leaf_nodes: Vec<Node> = vec![];
+    let mut current_node: Node = Node::new(vec![0]);
+    let mut node_map: HashMap<Node, Alphagram> = HashMap::new();
+    node_map.insert(current_node, Alphagram::new(&user_input));
+    let last_word_index = word_list.len();
+
+    loop {
+        if result_accumulator.len() >= requested_length {
+
+            for node in good_leaf_nodes {
+                anagrams.push(node_to_string(&priority, &word_list));
+            }
+
+            return anagrams;
+        }
+        // return if results full
+        // return if current_node = root ([])
+        // - get alphagram from parent_node(current_node)
+        // - try to remove the last word in current_node
+        //   - if can
+        //     - if letters remaining is empty
+        //       - add current_node to results
+        //       - set current_node = next_node(current_node, last_word_index)
+        //       - continue
+        //     - else
+        //       - add current_node to node_map
+        //       - set current_node = child_node(current_node)
+        //       - continue
+        //   - if can't
+        //     - set current_node = next_node(current_node, last_word_index)
+        //     - continue
+    }
+    return vec![];
+}
+
 
 pub fn anagrams_for(
     user_input: String,
@@ -69,6 +117,15 @@ pub fn dfs(c: CandidateAnagram, result_accumulator: &mut Vec<Priority>, requeste
 fn priority_to_string(priority: &Priority, word_list: &Vec<(&String, Alphagram)>) -> String {
     let mut result = String::new();
     for number in priority.clone().into_iter() {
+        result.push_str(&word_list[number].0.clone());
+        result.push_str(" ");
+    }
+    return result;
+}
+
+fn node_to_string(node: &Node, word_list: &Vec<(&String, Alphagram)>) -> String {
+    let mut result = String::new();
+    for number in node.clone().into_iter() {
         result.push_str(&word_list[number].0.clone());
         result.push_str(" ");
     }
