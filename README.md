@@ -3,6 +3,7 @@
 Anagrams are useless but funny. Let's make some!
 
 - "rust programming" => "grim gun port arms" or "asymmetry foe" or "tarring prom mugs"
+- "rust anagrams library" => "triangular brass army" or "snag arbitrary murals"
 - "software engineer" => "we are fingers o net" or "sea of wintergreen"
 - "memory safety" => "me, my artsy foe" or "ye soft yammer" or "format my eyes"
 
@@ -32,3 +33,7 @@ Our tree could look like this, where a node is "found words / remaining letters"
 Before deciding if a phrase contains a word, it converts them both to "alphagrams", which are order-agnostic; "bat" and "tab" have the same alphagram.
 We represent alphagrams internally as a hashmap listing the count of each character.
 This makes comparison and subtraction efficient.
+
+Swappy is single-threaded, but performs well.
+I considered a multi-threaded design, but could not find a good way to use multiple threads and still guarantee that results are produced in the order given in the word list.
+I experimented with using a priority queue for this, but the queue was a significant performance bottleneck.

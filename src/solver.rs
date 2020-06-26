@@ -14,6 +14,7 @@ pub fn anagrams_for(
     let word_list = word_list::words_with_alphagrams(word_list);
     let word_list = word_list::found_within(word_list, user_input.clone());
     eprintln!("Prepped the word list");
+    eprintln!("Searching...");
 
     let c = CandidateAnagram::new(&user_input);
 
@@ -47,7 +48,7 @@ pub fn depth_first_search(
         // small number - like, 20 would be a lot.
         for child in c.children(&word_list) {
             *node_count = *node_count + 1;
-            if *node_count % 10_000 == 0 {
+            if *node_count % 1_000_000 == 0 {
                 eprintln!("{} word checks", node_count);
             }
             depth_first_search(child, result_accumulator, requested_length, word_list, node_count);
