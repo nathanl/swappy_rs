@@ -22,14 +22,15 @@ Usage:
 ## Basic Strategy
 
 Swappy performs a depth-first search of the tree of possible anagrams which use our word list and phrase.
-Our tree could look like this, where a node is "found words / remaining letters".
+Our tree could look like this, where a node is represented as `[found words] / [remaining letters]`.
+A node where there are no remaining letters is an anagram.
 
 - `racecar /`
   - `race / car`
       - `race a / cr`  [failed leaf]
       - `race car /` [successful leaf]
-  - `craec / ar`
-      - `racec a / r`  [failed leaf]
+  - `racer / ca`
+      - `racer a / c`  [failed leaf]
 
 Before deciding if a phrase contains a word, it converts them both to "alphagrams", which are order-agnostic; "bat" and "tab" have the same alphagram.
 We represent alphagrams internally as a hashmap listing the count of each character.
