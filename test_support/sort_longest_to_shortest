@@ -1,0 +1,2 @@
+#!/bin/bash
+cat | awk '{ print length, $0 }' | sort -nr -s | cut -d" " -f2-
