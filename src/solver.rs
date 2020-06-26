@@ -110,6 +110,6 @@ mod tests {
 
         let elapsed = now.elapsed().as_millis();
         println!("Elapsed: {:?}", elapsed);
-        assert!(elapsed < 1_300);
+        assert!(elapsed < 1_000);
     }
 }
