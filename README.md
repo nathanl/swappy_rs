@@ -24,17 +24,17 @@ Usage:
 Swappy performs a depth-first search of the tree of possible anagrams which use our word list and phrase.
 Our tree could look like this, where a node is "found words / remaining letters".
 
-- racecar /
-  - race / car
-      - race a / cr  [failed leaf]
-      - race car /  [successful leaf]
-  - craec / ar
-      - racec a / r  [failed leaf]
+- `racecar /`
+  - `race / car`
+      - `race a / cr`  [failed leaf]
+      - `race car /` [successful leaf]
+  - `craec / ar`
+      - `racec a / r`  [failed leaf]
 
 Before deciding if a phrase contains a word, it converts them both to "alphagrams", which are order-agnostic; "bat" and "tab" have the same alphagram.
 We represent alphagrams internally as a hashmap listing the count of each character.
 This makes comparison and subtraction efficient.
 
 Swappy is single-threaded, but performs well.
-I considered a multi-threaded design, but could not find a good way to use multiple threads and still guarantee that results are produced in the order given in the word list.
+I considered a multi-threaded design, but could not think of a good way to use multiple threads and still guarantee that results are produced in the order given in the word list.
 I experimented with using a priority queue for this, but the queue was a significant performance bottleneck.
