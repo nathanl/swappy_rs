@@ -22,8 +22,9 @@ Usage:
 ## Basic Strategy
 
 Swappy performs a depth-first search of the tree of possible anagrams which use our word list and phrase.
-Our tree could look like this, where a node is represented as `[found words] / [remaining letters]`.
 A node where there are no remaining letters is an anagram.
+
+Our tree could look like this, where a node is represented as `[found words] / [remaining letters]`.
 
 - `racecar /`
   - `race / car`
