@@ -7,6 +7,8 @@ use std::env;
 use std::path::Path;
 use std::process;
 use shellexpand;
+#[macro_use]
+extern crate lazy_static;
 
 fn main() {
     let args: Vec<String> = env::args().collect();

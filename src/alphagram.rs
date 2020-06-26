@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use regex::Regex;
 
 /// Represents the "bag" or "multiset" (non-unique set) of characters contained in a word or phrase.
 /// Eg, "bat" and "tab" have the same alphagram, but "tint" is not the same alphagram as "tin".
@@ -8,12 +9,17 @@ use std::collections::HashMap;
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Alphagram(HashMap<char, u8>, u8);
 
+lazy_static! {
+    static ref RE: Regex = Regex::new(r"[\s']").unwrap();
+}
+
 impl Alphagram {
     pub fn new(input: &str) -> Alphagram {
         let lc = input.to_lowercase();
-        // TODO - more robust filtering of whitespace
-        // (tried with https://crates.io/crates/regex and \W but it was way too slow)
-        let chars = lc.chars().filter(|c| c != &' ');
+ 
+        let lc = RE.replace_all(&lc, "");
+        let chars = lc.chars();
+
         let mut map: HashMap<char, u8> = HashMap::with_capacity(26);
         let mut length: u8 = 0;
         for this_char in chars {

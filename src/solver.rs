@@ -104,12 +104,12 @@ mod tests {
         use std::time::Instant;
         let now = Instant::now();
 
-        let word_list = word_list::lines_from_file("test_support/smallish_list.txt");
+        let word_list = word_list::lines_from_file("test_support/wordlist.txt");
         let (_node_count, results) = anagrams_for("rust language".to_string(), &word_list, 1_000);
         println!("result count {}", results.len());
 
         let elapsed = now.elapsed().as_millis();
         println!("Elapsed: {:?}", elapsed);
-        assert!(elapsed < 1_000);
+        assert!(elapsed < 1_300);
     }
 }
