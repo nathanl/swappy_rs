@@ -23,15 +23,17 @@ fn main() {
 
     let word_list_file = match env::var("WORDLIST") {
         Ok(filename) => filename.to_string(),
-        Err(_) => shellexpand::tilde("~/.swappy_wordlist").to_string(),
+        Err(_) => {
+            let f = "~/.swappy_wordlist";
+            println!("using wordlist file {}", f);
+            shellexpand::tilde(f).to_string()
+        }
     };
 
     if !Path::new(&word_list_file).exists() {
         println!("word list file '{}' does not exist", word_list_file);
         process::exit(1);
     }
-
-    println!("wordlist file is {}", word_list_file);
 
     let limit: usize = match env::var("LIMIT") {
         Ok(val) => val.parse::<usize>().unwrap(),
@@ -50,8 +52,8 @@ fn print_usage() {
     println!(
         "
     USAGE:
-       cargo run 'my phrase'
-       LIMIT=3 WORDLIST=/some/file.txt 'my phrase'
+       swappy 'my phrase'
+       LIMIT=3 WORDLIST=/some/file.txt swappy 'my phrase'
     "
     );
 }
