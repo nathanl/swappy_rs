@@ -1,6 +1,6 @@
 [package]
 name = "swappy"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Nathan Long <him@nathanmlong.com>"]
 edition = "2018"
 exclude = ["test_support/*"]
