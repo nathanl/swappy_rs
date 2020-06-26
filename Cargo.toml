@@ -4,6 +4,12 @@ version = "0.1.0"
 authors = ["Nathan Long <him@nathanmlong.com>"]
 edition = "2018"
 exclude = ["test_support/*"]
+license = "MIT OR Apache-2.0"
+description = "An anagram generator"
+readme = "README.md"
+homepage = "https://gitlab.com/nathanl/swappy.rs"
+repository = "https://gitlab.com/nathanl/swappy.rs"
+keywords = ["anagrams", "language"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
