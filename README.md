@@ -11,12 +11,13 @@ Swappy produces anagrams of a given input phrase using a given word list file.
 
 It prioritizes words that occur earlier in the word list, and lets you limit how many results are produced.
 This lets you tailor what kinds of results you want (eg, by putting words you think are funny at the top, or sorting the list longest to shortest for impressive finds).
-By default, it uses a dictionary sorted longest to shortest, and with many short, uncommon words (like "oe" and "mu") removed for increased efficiency.
+By default, it looks for a word list file at `~/.swappy_wordlist`, but you can set the `WORDLIST` env var to another file.
+Swappy's repo contains [a wordlist file](https://gitlab.com/nathanl/swappy.rs/-/raw/master/test_support/smallish_list.txt) sorted longest to shortest, and with many short, uncommon words (like "oe" and "mu") removed for increased efficiency.
 
 Usage:
    - `cargo build --release`
    - `target/release/swappy 'my phrase'`
-   - `LIMIT=20 WORDS=/some/file.txt target/release/swappy 'my phrase'`
+   - `LIMIT=20 WORDLIST=/some/file.txt target/release/swappy 'my phrase'`
 
 ## Basic Strategy
 

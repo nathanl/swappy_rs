@@ -12,3 +12,4 @@ exclude = ["test_support/*"]
 benchmark = []
 
 [dependencies]
+shellexpand = "1.1.1"

@@ -4,6 +4,9 @@ mod solver;
 mod found_words;
 mod word_list;
 use std::env;
+use std::path::Path;
+use std::process;
+use shellexpand;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -18,10 +21,17 @@ fn main() {
         }
     }
 
-    let word_list_file = match env::var("WORDS") {
+    let word_list_file = match env::var("WORDLIST") {
         Ok(filename) => filename.to_string(),
-        Err(_) => "test_support/smallish_list.txt".to_string(),
+        Err(_) => shellexpand::tilde("~/.swappy_wordlist").to_string(),
     };
+
+    if !Path::new(&word_list_file).exists() {
+        println!("word list file '{}' does not exist", word_list_file);
+        process::exit(1);
+    }
+
+    println!("wordlist file is {}", word_list_file);
 
     let limit: usize = match env::var("LIMIT") {
         Ok(val) => val.parse::<usize>().unwrap(),
@@ -41,7 +51,7 @@ fn print_usage() {
         "
     USAGE:
        cargo run 'my phrase'
-       LIMIT=3 WORDS=/some/file.txt 'my phrase'
+       LIMIT=3 WORDLIST=/some/file.txt 'my phrase'
     "
     );
 }
