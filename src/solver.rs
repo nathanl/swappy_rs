@@ -90,8 +90,9 @@ mod tests {
         let word_list = word_list(vec![
             "fanhead", "car", "potatoes", "race", "floppy", "acre", "aa", "rcecr",
         ]);
+        let (_node_count, results) = anagrams_for("racecar".to_string(), &word_list, 2);
         assert_eq!(
-            anagrams_for("racecar".to_string(), &word_list, 2),
+            results,
             vec!["car race ", "car acre "]
         );
     }
@@ -103,7 +104,7 @@ mod tests {
         let now = Instant::now();
 
         let word_list = word_list::lines_from_file("test_support/smallish_list.txt");
-        let results = anagrams_for("rust language".to_string(), &word_list, 1_000);
+        let (_node_count, results) = anagrams_for("rust language".to_string(), &word_list, 1_000);
         println!("result count {}", results.len());
 
         let elapsed = now.elapsed().as_millis();
