@@ -1,24 +1,12 @@
 use std::collections::HashMap;
-use std::hash::{Hash, Hasher};
 
-// Represents the "bag" or "multiset" (non-unique set) of characters contained in a word or phrase.
-// Eg, "bat" and "tab" have the same alphagram, but "tint" is not the same alphagram as "tin".
-// Here we represent the alphagram as a hashmap, where the keys are characters and the values are
-// the number of times they occur. This allows for efficient subtraction.
+/// Represents the "bag" or "multiset" (non-unique set) of characters contained in a word or phrase.
+/// Eg, "bat" and "tab" have the same alphagram, but "tint" is not the same alphagram as "tin".
+/// Here we represent the alphagram as a hashmap, where the keys are characters and the values are
+/// the number of times they occur. This allows for efficient subtraction.
 // https://doc.rust-lang.org/rust-by-example/generics/new_types.html
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Alphagram(HashMap<char, u8>, u8);
-
-// NOTE: the priority queue calls this function, but apparently the
-// function always returns ()...
-// ...and that doesn't matter? :`¯\_(ツ)_/¯`:
-impl Hash for Alphagram {
-    fn hash<H: Hasher>(&self, _state: &mut H) {
-        ()
-        // let str = format!("{:?}", self.0);
-        // str.hash(state);
-    }
-}
 
 impl Alphagram {
     pub fn new(input: &str) -> Alphagram {

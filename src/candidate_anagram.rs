@@ -10,7 +10,7 @@ use crate::found_words::FoundWords;
 // Many CandidateAnagrams are not complete and also have no children; eg, a CandidateAnagram
 // which has only the letter "z" in remaining_chars isn't complete, but no more words can be found.
 // In that case, it's a "dead end" leaf node in our tree.
-#[derive(PartialEq, Eq, Debug, Hash)]
+#[derive(PartialEq, Eq, Debug)]
 pub struct CandidateAnagram {
     pub words_found: FoundWords,
     pub remaining_chars: Alphagram,
