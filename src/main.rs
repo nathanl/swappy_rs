@@ -13,6 +13,7 @@ extern crate lazy_static;
 fn main() {
     let args: Vec<String> = env::args().collect();
     let phrase: &str;
+    let removal: &str;
     match args.get(1) {
         Some(input) => {
             phrase = &input;
@@ -20,6 +21,17 @@ fn main() {
         None => {
             print_usage();
             std::process::exit(1);
+        }
+    }
+
+    // TODO remove from input phrase so we can pull out words we like
+    match args.get(2) {
+        Some(input) => {
+            removal = &input;
+            println!("removing '{}' from the input phrase", removal);
+        }
+        None => {
+            // do nothing
         }
     }
 
